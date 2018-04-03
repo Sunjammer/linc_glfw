@@ -1,15 +1,14 @@
-//hxcpp include should be first
 #include <hxcpp.h>
-#include "./linc_empty.h"
+#include "./linc_glfw.h"
 
 namespace linc {
 
-    namespace empty {
+    namespace glfw {
 
         int example() {
             return 55;
         }
 
-    } //empty namespace
+    } //glfw namespace
 
 } //linc
