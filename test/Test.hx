@@ -1,4 +1,4 @@
-
+import glfw.GLFW.*;
 class Test {
         
     public static function main(){
