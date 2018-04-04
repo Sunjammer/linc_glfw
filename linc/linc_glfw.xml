@@ -11,8 +11,12 @@
         <section if="mac">
             <lib name='${LINC_GLFW_PATH}lib/libglfw.3.2.dylib' />
         </section>
+        <section if="windows">
+            <lib name='${LINC_GLFW_PATH}lib/glfw3dll.lib' />
+        </section>
     </target>
 
     <copyFile name="libglfw.3.2.dylib" from="${LINC_GLFW_PATH}lib" if="mac"/>
+    <copyFile name="glfw3.dll" from="${LINC_GLFW_PATH}lib" if="windows"/>
 
 </xml>
