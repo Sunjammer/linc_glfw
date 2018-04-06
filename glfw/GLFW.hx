@@ -8,6 +8,11 @@ import cpp.Callable;
 @:include('linc_glfw.h')
 extern class GLFWwindow {}
 
+@:keep
+@:native("GLFWmonitor")
+@:include('linc_glfw.h')
+extern class GLFWmonitor {}
+
 typedef GLFWerrorfun = Int -> String -> Void
 
 class GLFWErrorHandler {
@@ -15,7 +20,7 @@ class GLFWErrorHandler {
     static var cb:GLFWerrorfun;
 
     public static function onError(error:Int, message:String){
-        trace("onerror");
+        trace(error+": "+message);
         if(cb != null) cb(error, message);
     }
 
@@ -573,8 +578,14 @@ extern class GLFW {
         untyped __cpp__("linc::glfw::setErrorCb({0})", cbPtr);
     }
 
+    @:native('glfwSetWindowSize')
+    static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
+
     @:native('glfwWindowHint')
     static function glfwWindowHint(hint:Int, value:Int):Void;
+
+    @:native('glfwGetPrimaryMonitor')
+    static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
 
     @:native('glfwCreateWindow')
     static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Dynamic /*GLFWmonitor* monitor*/, window:Pointer<GLFWwindow> /*GLFWwindow* share*/):Pointer<GLFWwindow>;
@@ -590,5 +601,8 @@ extern class GLFW {
 
     @:native('glfwSwapBuffers')
     static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
+
+    @:native('glfwDefaultWindowHints')
+    static function glfwDefaultWindowHints():Void;
 
 } //GLFW
