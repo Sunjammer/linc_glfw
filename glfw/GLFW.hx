@@ -1,6 +1,7 @@
 package glfw;
 
 import cpp.Pointer;
+import cpp.Reference;
 import cpp.Callable;
 
 typedef HWND = cpp.Pointer<cpp.Void>;
@@ -15,19 +16,41 @@ extern class GLFWwindow {}
 @:include('linc_glfw.h')
 extern class GLFWmonitor {}
 
-typedef GLFWerrorfun = Int -> String -> Void
-
+typedef GLFWerrorfun = Int -> String -> Void;
+@:keep
 class GLFWErrorHandler {
 
     static var cb:GLFWerrorfun;
 
-    public static function onError(error:Int, message:String){
+    public static var callable = Callable.fromStaticFunction(GLFWErrorHandler.onError);
+
+    static function onError(error:Int, message:String){
         trace(error+": "+message);
         if(cb != null) cb(error, message);
     }
 
     public static function setCallback(func:GLFWerrorfun){
         cb = func;
+    }
+}
+
+typedef GLFWkeycb = Int -> Int -> Int -> Int -> Void;
+@:keep
+class GLFWKeyHandler {
+
+    static var listeners = new Map<String, GLFWkeycb>();
+
+    public static var callable = Callable.fromStaticFunction(GLFWKeyHandler.onInput);
+
+    static function onInput(win:Pointer<GLFWwindow>, key:Int, scancode:Int, action:Int, mods:Int):Void{
+        var ptr = win+"";
+        if(listeners.exists(ptr)){
+            listeners[ptr](key, scancode, action, mods);
+        }
+    }
+
+    public static function setCallback(win:Pointer<GLFWwindow>, func:GLFWkeycb):Void{
+        listeners[win+""] = func;
     }
 }
 
@@ -38,6 +61,69 @@ class GLFWErrorHandler {
 @:build(linc.Linc.xml('glfw'))
 #end
 extern class GLFW {
+    //Bindings
+
+    @:native('glfwInit')
+    static function glfwInit() : Int;
+
+    @:native('glfwTerminate')
+    static function glfwTerminate() : Void;
+
+    static inline function glfwSetErrorCallback(cb:GLFWerrorfun):Void{
+        GLFWErrorHandler.setCallback(cb);
+        untyped __cpp__("linc::glfw::setErrorCb({0})", cpp.Pointer.addressOf(GLFWErrorHandler.callable));
+    }
+
+    static inline function glfwSetKeyCallback(window:Pointer<GLFWwindow>, cb:GLFWkeycb):Void{
+        GLFWKeyHandler.setCallback(window, cb);
+        untyped __cpp__("linc::glfw::setKeyCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWKeyHandler.callable));
+    }
+
+    @:native('glfwGetPrimaryMonitor')
+    static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
+
+    @:native('glfwSetWindowSize')
+    static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
+
+    @:native('glfwWindowHint')
+    static function glfwWindowHint(hint:Int, value:Int):Void;
+
+    @:native('glfwCreateWindow')
+    static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Pointer<GLFWmonitor>, window:Pointer<GLFWwindow>):Pointer<GLFWwindow>;
+
+    @:native('glfwMakeContextCurrent')
+    static function glfwMakeContextCurrent(window:Pointer<GLFWwindow>):Void;
+
+    @:native('glfwWindowShouldClose')
+    static function glfwWindowShouldClose(window:Pointer<GLFWwindow>):Int;
+
+    @:native('glfwSwapBuffers')
+    static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
+
+    @:native('glfwDefaultWindowHints')
+    static function glfwDefaultWindowHints():Void;
+
+    // Input shenaningans
+
+    @:native('glfwPollEvents')
+    static function glfwPollEvents():Void;
+
+    @:native('glfwWaitEvents')
+    static function glfwWaitEvents():Void;
+
+    @:native('glfwPostEmptyEvent')
+    static function glfwPostEmptyEvent():Void;
+
+    @:native('glfwWaitEventsTimeout')
+    static function glfwWaitEventsTimeout(timeout:Float):Void;
+    
+    @:native("glfwGetWin32Window")
+    static function glfwGetWin32Window(window:Pointer<GLFWwindow>):HWND;
+
+    @:native("glfwGetTime")
+    static function glfwGetTime():Float;
+
+
     //Values
     /*************************************************************************
     * GLFW API tokens
@@ -565,63 +651,5 @@ extern class GLFW {
     static inline var GLFW_DISCONNECTED           = 0x00040002;
 
     static inline var GLFW_DONT_CARE              = -1;
-
-    //Bindings
-
-    @:native('glfwInit')
-    static function glfwInit() : Int;
-
-    @:native('glfwTerminate')
-    static function glfwTerminate() : Void;
-
-    static inline function glfwSetErrorCallback(cb:GLFWerrorfun):Void{
-        GLFWErrorHandler.setCallback(cb);
-        var cbPtr = Callable.fromStaticFunction(GLFWErrorHandler.onError);
-        untyped __cpp__("linc::glfw::setErrorCb({0})", cbPtr);
-    }
-
-    @:native('glfwGetPrimaryMonitor')
-    static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
-
-    @:native('glfwSetWindowSize')
-    static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
-
-    @:native('glfwWindowHint')
-    static function glfwWindowHint(hint:Int, value:Int):Void;
-
-    @:native('glfwCreateWindow')
-    static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Pointer<GLFWmonitor>, window:Pointer<GLFWwindow>):Pointer<GLFWwindow>;
-
-    @:native('glfwMakeContextCurrent')
-    static function glfwMakeContextCurrent(window:Pointer<GLFWwindow>):Void;
-
-    @:native('glfwWindowShouldClose')
-    static function glfwWindowShouldClose(window:Pointer<GLFWwindow>):Int;
-
-    @:native('glfwSwapBuffers')
-    static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
-
-    @:native('glfwDefaultWindowHints')
-    static function glfwDefaultWindowHints():Void;
-
-    // Input shenaningans
-
-    @:native('glfwPollEvents')
-    static function glfwPollEvents():Void;
-
-    @:native('glfwWaitEvents')
-    static function glfwWaitEvents():Void;
-
-    @:native('glfwPostEmptyEvent')
-    static function glfwPostEmptyEvent():Void;
-
-    @:native('glfwWaitEventsTimeout')
-    static function glfwWaitEventsTimeout(timeout:Float):Void;
-    
-    @:native("glfwGetWin32Window")
-    static function glfwGetWin32Window(window:Pointer<GLFWwindow>):HWND;
-
-    @:native("glfwGetTime")
-    static function glfwGetTime():Float;
 
 } //GLFW
