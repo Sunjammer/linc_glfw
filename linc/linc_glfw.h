@@ -13,12 +13,14 @@ namespace linc {
 
         typedef cpp::Function<void(cpp::Pointer<GLFWwindow>, int, int, int, int)> KeyCb;
         typedef cpp::Function<void(cpp::Pointer<GLFWwindow>, double, double)> MouseMoveCb;
+        typedef cpp::Function<void(cpp::Pointer<GLFWwindow>, int, int, int)> MouseButtonCb;
         typedef cpp::Function<void(int, String)> ErrorCb;
 
         extern void callErrorCb(int error, const char* message);
         extern void setErrorCb(cpp::Pointer<ErrorCb> func);
         extern void setKeyCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<KeyCb> func);
         extern void setMouseMoveCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseMoveCb> func);
+        extern void setMouseButtonCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseButtonCb> func);
     } //glfw namespace
 
 } //linc

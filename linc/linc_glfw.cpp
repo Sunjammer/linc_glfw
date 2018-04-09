@@ -36,6 +36,17 @@ namespace linc {
             mouseMoveCb = func;
             glfwSetCursorPosCallback(win, &callMouseMoveCb);
         }
+        
+        static MouseButtonCb * mouseButtonCb;
+        void callMouseButtonCb(GLFWwindow* win, int button, int action, int mods){
+            if(mouseButtonCb){
+                mouseButtonCb->call(win, button, action, mods);
+            }
+        }
+        extern void setMouseButtonCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseButtonCb> func){
+            mouseButtonCb = func;
+            glfwSetMouseButtonCallback(win, &callMouseButtonCb);
+        }
 
     } //glfw namespace
 

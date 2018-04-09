@@ -74,6 +74,46 @@ class GLFWMouseMoveHandler {
     }
 }
 
+typedef GLFWmousebuttoncb = Int -> Int -> Int -> Void;
+@:keep
+class GLFWMouseButtonHandler {
+
+    static var listeners = new Map<String, GLFWmousebuttoncb>();
+
+    public static var callable = Callable.fromStaticFunction(GLFWMouseButtonHandler.onInput);
+
+    static function onInput(win:Pointer<GLFWwindow>, button:Int, action:Int, mods:Int):Void{
+        var ptr = win+"";
+        if(listeners.exists(ptr)){
+            listeners[ptr](button, action, mods);
+        }
+    }
+
+    public static function setCallback(win:Pointer<GLFWwindow>, func:GLFWmousebuttoncb):Void{
+        listeners[win+""] = func;
+    }
+}
+
+typedef GLFWmousewheelcb = Float -> Float -> Void;
+@:keep
+class GLFWMouseWheelHandler {
+
+    static var listeners = new Map<String, GLFWmousewheelcb>();
+
+    public static var callable = Callable.fromStaticFunction(GLFWMouseWheelHandler.onInput);
+
+    static function onInput(win:Pointer<GLFWwindow>, x:Float, y:Float):Void{
+        var ptr = win+"";
+        if(listeners.exists(ptr)){
+            listeners[ptr](x,y);
+        }
+    }
+
+    public static function setCallback(win:Pointer<GLFWwindow>, func:GLFWmousewheelcb):Void{
+        listeners[win+""] = func;
+    }
+}
+
 @:keep
 @:include('linc_glfw.h')
 #if !display
