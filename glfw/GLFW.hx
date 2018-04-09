@@ -580,23 +580,31 @@ extern class GLFW {
         untyped __cpp__("linc::glfw::setErrorCb({0})", cbPtr);
     }
 
+    @:native('glfwGetPrimaryMonitor')
+    static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
+
     @:native('glfwSetWindowSize')
     static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
 
     @:native('glfwWindowHint')
     static function glfwWindowHint(hint:Int, value:Int):Void;
 
-    @:native('glfwGetPrimaryMonitor')
-    static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
-
     @:native('glfwCreateWindow')
-    static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Dynamic /*GLFWmonitor* monitor*/, window:Pointer<GLFWwindow> /*GLFWwindow* share*/):Pointer<GLFWwindow>;
+    static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Pointer<GLFWmonitor>, window:Pointer<GLFWwindow>):Pointer<GLFWwindow>;
 
     @:native('glfwMakeContextCurrent')
     static function glfwMakeContextCurrent(window:Pointer<GLFWwindow>):Void;
 
     @:native('glfwWindowShouldClose')
     static function glfwWindowShouldClose(window:Pointer<GLFWwindow>):Int;
+
+    @:native('glfwSwapBuffers')
+    static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
+
+    @:native('glfwDefaultWindowHints')
+    static function glfwDefaultWindowHints():Void;
+
+    // Input shenaningans
 
     @:native('glfwPollEvents')
     static function glfwPollEvents():Void;
@@ -613,11 +621,6 @@ extern class GLFW {
     @:native("glfwGetWin32Window")
     static function glfwGetWin32Window(window:Pointer<GLFWwindow>):HWND;
 
-    @:native('glfwSwapBuffers')
-    static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
-
-    @:native('glfwDefaultWindowHints')
-    static function glfwDefaultWindowHints():Void;
     @:native("glfwGetTime")
     static function glfwGetTime():Float;
 
