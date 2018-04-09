@@ -48,6 +48,17 @@ namespace linc {
             glfwSetMouseButtonCallback(win, &callMouseButtonCb);
         }
 
+        static MouseWheelCb * mouseWheelCb;
+        void callMouseWheelCb(GLFWwindow* win, double x, double y){
+            if(mouseWheelCb){
+                mouseWheelCb->call(win, x, y);
+            }
+        }
+        extern void setMouseWheelCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseWheelCb> func){
+            mouseWheelCb = func;
+            glfwSetScrollCallback(win, &callMouseWheelCb);
+        }
+
     } //glfw namespace
 
 } //linc

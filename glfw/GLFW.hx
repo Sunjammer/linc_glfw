@@ -144,6 +144,16 @@ extern class GLFW {
         untyped __cpp__("linc::glfw::setMouseMoveCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWMouseMoveHandler.callable));
     }
 
+    static inline function glfwSetMouseButtonCallback(window:Pointer<GLFWwindow>, cb:GLFWmousebuttoncb):Void{
+        GLFWMouseButtonHandler.setCallback(window, cb);
+        untyped __cpp__("linc::glfw::setMouseButtonCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWMouseButtonHandler.callable));
+    }
+
+    static inline function glfwSetScrollCallback(window:Pointer<GLFWwindow>, cb:GLFWmousewheelcb):Void{
+        GLFWMouseWheelHandler.setCallback(window, cb);
+        untyped __cpp__("linc::glfw::setMouseWheelCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWMouseWheelHandler.callable));
+    }
+
     @:native('glfwGetPrimaryMonitor')
     static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
 
