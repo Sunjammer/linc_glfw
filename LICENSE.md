@@ -1,5 +1,10 @@
+The lib/ folder has its own license. Be sure to consult it accordingly.
+
+    lib/LICENSE.md
+
 The MIT License (MIT)
 
+Copyright (c) 2018 Andreas Rønning
 Copyright (c) 2015 Sven Bergström   
 Copyright (c) 2015 snõwkit contributors
 
