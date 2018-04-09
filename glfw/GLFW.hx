@@ -54,6 +54,26 @@ class GLFWKeyHandler {
     }
 }
 
+typedef GLFWmouseposcb = Float -> Float -> Void;
+@:keep
+class GLFWMouseMoveHandler {
+
+    static var listeners = new Map<String, GLFWmouseposcb>();
+
+    public static var callable = Callable.fromStaticFunction(GLFWMouseMoveHandler.onInput);
+
+    static function onInput(win:Pointer<GLFWwindow>, x:Float, y:Float):Void{
+        var ptr = win+"";
+        if(listeners.exists(ptr)){
+            listeners[ptr](x, y);
+        }
+    }
+
+    public static function setCallback(win:Pointer<GLFWwindow>, func:GLFWmouseposcb):Void{
+        listeners[win+""] = func;
+    }
+}
+
 @:keep
 @:include('linc_glfw.h')
 #if !display
@@ -77,6 +97,11 @@ extern class GLFW {
     static inline function glfwSetKeyCallback(window:Pointer<GLFWwindow>, cb:GLFWkeycb):Void{
         GLFWKeyHandler.setCallback(window, cb);
         untyped __cpp__("linc::glfw::setKeyCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWKeyHandler.callable));
+    }
+
+    static inline function glfwSetCursorPosCallback(window:Pointer<GLFWwindow>, cb:GLFWmouseposcb):Void{
+        GLFWMouseMoveHandler.setCallback(window, cb);
+        untyped __cpp__("linc::glfw::setMouseMoveCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWMouseMoveHandler.callable));
     }
 
     @:native('glfwGetPrimaryMonitor')

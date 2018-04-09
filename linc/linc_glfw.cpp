@@ -16,7 +16,7 @@ namespace linc {
         }
         
         static KeyCb * keyCb;
-        extern void callKeyCb(GLFWwindow* win, int key, int scancode, int action, int modifier){
+        void callKeyCb(GLFWwindow* win, int key, int scancode, int action, int modifier){
             if(keyCb){
                 keyCb->call(win, key, scancode, action, modifier);
             }
@@ -24,6 +24,17 @@ namespace linc {
         extern void setKeyCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<KeyCb> func){
             keyCb = func;
             glfwSetKeyCallback(win, &callKeyCb);
+        }
+        
+        static MouseMoveCb * mouseMoveCb;
+        void callMouseMoveCb(GLFWwindow* win, double x, double y){
+            if(mouseMoveCb){
+                mouseMoveCb->call(win, x, y);
+            }
+        }
+        extern void setMouseMoveCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseMoveCb> func){
+            mouseMoveCb = func;
+            glfwSetCursorPosCallback(win, &callMouseMoveCb);
         }
 
     } //glfw namespace
