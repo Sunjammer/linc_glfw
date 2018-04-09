@@ -618,5 +618,7 @@ extern class GLFW {
 
     @:native('glfwDefaultWindowHints')
     static function glfwDefaultWindowHints():Void;
+    @:native("glfwGetTime")
+    static function glfwGetTime():Float;
 
 } //GLFW
