@@ -599,6 +599,15 @@ extern class GLFW {
     @:native('glfwPollEvents')
     static function glfwPollEvents():Void;
 
+    @:native('glfwWaitEvents')
+    static function glfwWaitEvents():Void;
+
+    @:native('glfwPostEmptyEvent')
+    static function glfwPostEmptyEvent():Void;
+
+    @:native('glfwWaitEventsTimeout')
+    static function glfwWaitEventsTimeout(timeout:Float):Void;
+
     @:native('glfwSwapBuffers')
     static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
 
