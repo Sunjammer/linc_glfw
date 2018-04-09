@@ -3,6 +3,8 @@ package glfw;
 import cpp.Pointer;
 import cpp.Callable;
 
+typedef HWND = cpp.Pointer<cpp.Void>;
+
 @:keep
 @:native("GLFWwindow")
 @:include('linc_glfw.h')
@@ -607,6 +609,9 @@ extern class GLFW {
 
     @:native('glfwWaitEventsTimeout')
     static function glfwWaitEventsTimeout(timeout:Float):Void;
+    
+    @:native("glfwGetWin32Window")
+    static function glfwGetWin32Window(window:Pointer<GLFWwindow>):HWND;
 
     @:native('glfwSwapBuffers')
     static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
