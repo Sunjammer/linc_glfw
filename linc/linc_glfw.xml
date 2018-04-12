@@ -2,6 +2,7 @@
 
     <files id='haxe'>
         <compilerflag value='-DLINC_GLFW'/>
+        <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Haxe realm, don't be too helpful -->
         <compilerflag value='-I${LINC_GLFW_PATH}linc/'/>
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
         <file name='${LINC_GLFW_PATH}linc/linc_glfw.cpp' />
