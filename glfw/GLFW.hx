@@ -1,5 +1,4 @@
 package glfw;
-
 import cpp.Pointer;
 import cpp.Reference;
 import cpp.Callable;
@@ -159,6 +158,9 @@ extern class GLFW {
 
     @:native('glfwSetWindowSize')
     static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
+
+    @:native('glfwGetWindowSize')
+    static function glfwGetWindowSize(window:Pointer<GLFWwindow>, width:Pointer<Int>, height:Pointer<Int>):Void;
 
     @:native('glfwWindowHint')
     static function glfwWindowHint(hint:Int, value:Int):Void;
