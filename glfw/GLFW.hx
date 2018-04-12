@@ -162,6 +162,9 @@ extern class GLFW {
     @:native('glfwGetWindowSize')
     static function glfwGetWindowSize(window:Pointer<GLFWwindow>, width:Pointer<Int>, height:Pointer<Int>):Void;
 
+    @:native('glfwGetFramebufferSize')
+    static function glfwGetFramebufferSize(window:Pointer<GLFWwindow>, width:Pointer<Int>, height:Pointer<Int>):Void;
+
     @:native('glfwWindowHint')
     static function glfwWindowHint(hint:Int, value:Int):Void;
 
