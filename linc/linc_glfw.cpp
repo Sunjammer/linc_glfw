@@ -1,4 +1,4 @@
-#include <hxcpp.h>
+#include "hxcpp.h"
 #include "./linc_glfw.h"
 
 namespace linc {

@@ -1,6 +1,6 @@
-#pragma once
-
-#include <hxcpp.h>
+#ifndef LINC_GLFW_INCLUDE
+#define LINC_GLFW_INCLUDE
+#include "hxcpp.h"
 #include <GLFW/glfw3.h>
 #ifdef HX_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -26,3 +26,4 @@ namespace linc {
     } //glfw namespace
 
 } //linc
+#endif
