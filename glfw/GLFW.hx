@@ -180,6 +180,9 @@ extern class GLFW {
     @:native('glfwSwapBuffers')
     static function glfwSwapBuffers(window:Pointer<GLFWwindow>):Void;
 
+    @:native('glfwSwapInterval')
+    static function glfwSwapInterval(interval:Int):Void;
+
     @:native('glfwDefaultWindowHints')
     static function glfwDefaultWindowHints():Void;
 
