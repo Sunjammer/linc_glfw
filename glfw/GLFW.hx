@@ -33,6 +33,26 @@ class GLFWErrorHandler {
     }
 }
 
+typedef GLFWcharcb = cpp.UInt32 -> Void;
+@:keep
+class GLFWCharHandler {
+
+    static var listeners = new Map<String, GLFWcharcb>();
+
+    public static var callable = Callable.fromStaticFunction(GLFWCharHandler.onInput);
+
+    static function onInput(win:Pointer<GLFWwindow>, key:cpp.UInt32):Void{
+        var ptr = win+"";
+        if(listeners.exists(ptr)){
+            listeners[ptr](key);
+        }
+    }
+
+    public static function setCallback(win:Pointer<GLFWwindow>, func:GLFWcharcb):Void{
+        listeners[win+""] = func;
+    }
+}
+
 typedef GLFWkeycb = Int -> Int -> Int -> Int -> Void;
 @:keep
 class GLFWKeyHandler {
@@ -136,6 +156,11 @@ extern class GLFW {
     static inline function glfwSetKeyCallback(window:Pointer<GLFWwindow>, cb:GLFWkeycb):Void{
         GLFWKeyHandler.setCallback(window, cb);
         untyped __cpp__("linc::glfw::setKeyCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWKeyHandler.callable));
+    }
+
+    static inline function glfwSetCharCallback(window:Pointer<GLFWwindow>, cb:GLFWcharcb):Void{
+        GLFWCharHandler.setCallback(window, cb);
+        untyped __cpp__("linc::glfw::setCharCb({0}, {1})", window, cpp.Pointer.addressOf(GLFWCharHandler.callable));
     }
 
     static inline function glfwSetCursorPosCallback(window:Pointer<GLFWwindow>, cb:GLFWmouseposcb):Void{

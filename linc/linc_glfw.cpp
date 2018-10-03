@@ -4,6 +4,7 @@
 namespace linc {
 
     namespace glfw {
+        //Error callbacks
         static ErrorCb * errorCb;
         extern void callErrorCb(int error, const char* message){
             if(errorCb){
@@ -15,6 +16,7 @@ namespace linc {
             glfwSetErrorCallback(&callErrorCb);
         }
         
+        // Key callbacks
         static KeyCb * keyCb;
         void callKeyCb(GLFWwindow* win, int key, int scancode, int action, int modifier){
             if(keyCb){
@@ -25,7 +27,21 @@ namespace linc {
             keyCb = func;
             glfwSetKeyCallback(win, &callKeyCb);
         }
+
+        //Char callbacks
+        static CharCb * charCb;
+        void callCharCb(GLFWwindow* win, uint32_t key){
+            if(charCb){
+                charCb->call(win, key);
+            }
+        }
         
+        extern void setCharCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<CharCb> func){
+            charCb = func;
+            glfwSetCharCallback(win, &callCharCb);
+        }
+        
+        //Mouse callbacks
         static MouseMoveCb * mouseMoveCb;
         void callMouseMoveCb(GLFWwindow* win, double x, double y){
             if(mouseMoveCb){
