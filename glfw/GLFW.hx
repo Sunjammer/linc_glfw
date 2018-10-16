@@ -193,6 +193,9 @@ extern class GLFW {
     @:native('glfwWindowHint')
     static function glfwWindowHint(hint:Int, value:Int):Void;
 
+    @:native('glfwDestroyWindow')
+    static function glfwDestroyWindow(window:Pointer<GLFWwindow>):Void;
+
     @:native('glfwCreateWindow')
     static function glfwCreateWindow(width:Int, height:Int, title:String, monitor:Pointer<GLFWmonitor>, window:Pointer<GLFWwindow>):Pointer<GLFWwindow>;
 
