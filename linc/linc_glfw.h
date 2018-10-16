@@ -26,6 +26,10 @@ namespace linc {
         extern void setMouseMoveCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseMoveCb> func);
         extern void setMouseButtonCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseButtonCb> func);
         extern void setMouseWheelCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseWheelCb> func);
+
+        extern String glfwGetMonitorNameHelper(GLFWmonitor* monitor);
+        extern int glfwGetNumMonitors();
+        extern cpp::Pointer<GLFWmonitor> glfwGetMonitorHandle(int index);
     } //glfw namespace
 
 } //linc

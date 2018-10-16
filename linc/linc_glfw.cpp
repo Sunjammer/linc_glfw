@@ -75,6 +75,22 @@ namespace linc {
             glfwSetScrollCallback(win, &callMouseWheelCb);
         }
 
+        extern int glfwGetNumMonitors(){
+            int count;
+            glfwGetMonitors(&count);
+            return count;
+        }
+
+        extern String glfwGetMonitorNameHelper(GLFWmonitor* monitor){
+            return String(glfwGetMonitorName(monitor));
+        }
+        
+        extern cpp::Pointer<GLFWmonitor> glfwGetMonitorHandle(int index){
+            int count;
+            GLFWmonitor** outMonitors = glfwGetMonitors(&count);
+            return &outMonitors[index];
+        }
+
     } //glfw namespace
 
 } //linc

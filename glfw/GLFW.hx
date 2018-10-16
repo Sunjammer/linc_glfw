@@ -181,6 +181,20 @@ extern class GLFW {
     @:native('glfwGetPrimaryMonitor')
     static function glfwGetPrimaryMonitor():Pointer<GLFWmonitor>;
 
+    // Array doesn't like pointer types, so Dynamic seems to be it
+    static inline function glfwGetMonitors():Array<Dynamic> {
+        return untyped __cpp__("linc::glfw::glfwGetMonitorsHelper()");
+    }
+
+    @:native('linc::glfw::glfwGetMonitorNameHelper')
+    static function glfwGetMonitorName(monitor:Pointer<GLFWmonitor>):String;
+
+    @:native('linc::glfw::glfwGetMonitorHandle')
+    static function glfwGetMonitorHandle(index:Int):Pointer<GLFWmonitor>;
+
+    @:native('linc::glfw::glfwGetNumMonitors')
+    static function glfwGetNumMonitors():Int;
+
     @:native('glfwSetWindowSize')
     static function glfwSetWindowSize(window:Pointer<GLFWwindow>, width:Int, height:Int):Void;
 
