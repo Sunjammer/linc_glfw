@@ -75,6 +75,39 @@ namespace linc {
             glfwSetScrollCallback(win, &callMouseWheelCb);
         }
 
+        static JoystickCB * joystickCb;
+        void callJoystickCb(int x, int y){
+            if(joystickCb){
+                joystickCb->call(x, y);
+            }
+        }
+        extern void setJoystickCallback(cpp::Pointer<JoystickCB> func){
+            joystickCb = func;
+            glfwSetJoystickCallback(&callJoystickCb);
+        }
+        
+        extern String getJoystickName(int index){
+            return String(glfwGetJoystickName(index));
+        }
+
+        extern void getJoystickAxes(int index, Array<float> out){
+            int count;
+            const float* axes = glfwGetJoystickAxes(index, &count);
+            
+            for(int i = 0; i<count; i++){
+                out->push(axes[i]);
+            }
+        }
+
+        extern void getJoystickButtons(int index, Array<unsigned char> out){
+            int count;
+            const unsigned char* buttons = glfwGetJoystickButtons(index, &count);
+            
+            for(int i = 0; i<count; i++){
+                out->push(buttons[i]);
+            }
+        }
+
         extern int glfwGetNumMonitors(){
             int count;
             glfwGetMonitors(&count);

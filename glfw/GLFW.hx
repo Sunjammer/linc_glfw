@@ -2,6 +2,7 @@ package glfw;
 import cpp.Pointer;
 import cpp.Reference;
 import cpp.Callable;
+import haxe.io.BytesData;
 
 typedef HWND = cpp.Pointer<cpp.Void>;
 
@@ -133,6 +134,26 @@ class GLFWMouseWheelHandler {
     }
 }
 
+
+typedef GLFWjoystickcb = Int -> Int -> Void;
+@:keep
+class GLFWJoystickHandler {
+
+    static var listener:GLFWjoystickcb; 
+
+    public static var callable = Callable.fromStaticFunction(GLFWJoystickHandler.onJoystick);
+
+    static function onJoystick(joy:Int, event:Int):Void{
+        if(listener!=null){
+            listener(joy, event);
+        }
+    }
+
+    public static function setCallback(func:GLFWjoystickcb):Void{
+        listener = func;
+    }
+}
+
 @:keep
 @:include('linc_glfw.h')
 #if !display
@@ -229,6 +250,34 @@ extern class GLFW {
     static function glfwDefaultWindowHints():Void;
 
     // Input shenaningans
+
+    @:native('glfwJoystickPresent')
+    static function glfwJoystickPresent(index:Int):Int;
+
+    static inline function glfwGetJoystickAxes(index:Int):Array<Float> {
+        force_include();
+        var out:Array<Float> = [];
+        untyped __cpp__('linc::glfw::getJoystickAxes({0}, {1})', index, out);
+        return out;
+    }
+
+    static inline function glfwGetJoystickButtons(index:Int):BytesData {
+        force_include();
+        var out = new BytesData();
+        untyped __cpp__('linc::glfw::getJoystickButtons({0}, {1})', index, out);
+        return out;
+    }
+
+    static inline function glfwGetJoystickName(index:Int):String {
+        force_include();
+        return untyped __cpp__("linc::glfw::getJoystickName({0})", index);
+    }
+
+    static inline function glfwSetJoystickCallback(joystick_callback:GLFWjoystickcb):Void{
+        force_include();
+        GLFWJoystickHandler.setCallback(joystick_callback);
+        untyped __cpp__("linc::glfw::setJoystickCallback({0})", cpp.Pointer.addressOf(GLFWJoystickHandler.callable));
+    }
 
     @:native('glfwPollEvents')
     static function glfwPollEvents():Void;
@@ -776,5 +825,8 @@ extern class GLFW {
     static inline var GLFW_DISCONNECTED           = 0x00040002;
 
     static inline var GLFW_DONT_CARE              = -1;
+
+	@:native("void") 
+	public static function force_include():Void{ };
 
 } //GLFW

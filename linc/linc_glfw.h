@@ -17,6 +17,7 @@ namespace linc {
         typedef cpp::Function<void(cpp::Pointer<GLFWwindow>, int, int, int)> MouseButtonCb;
         typedef cpp::Function<void(cpp::Pointer<GLFWwindow>, uint32_t)> CharCb;
         typedef cpp::Function<void(int, String)> ErrorCb;
+        typedef cpp::Function<void(int, int)> JoystickCB;
 
         extern void callErrorCb(int error, const char* message);
 
@@ -26,6 +27,11 @@ namespace linc {
         extern void setMouseMoveCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseMoveCb> func);
         extern void setMouseButtonCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseButtonCb> func);
         extern void setMouseWheelCb(cpp::Pointer<GLFWwindow> win, cpp::Pointer<MouseWheelCb> func);
+
+        extern void getJoystickAxes(int index, Array<float> out);
+        extern void getJoystickButtons(int index, Array<unsigned char> out);
+        extern void setJoystickCallback(cpp::Pointer<JoystickCB> func);
+        extern String getJoystickName(int index);
 
         extern String glfwGetMonitorNameHelper(GLFWmonitor* monitor);
         extern int glfwGetNumMonitors();
