@@ -254,9 +254,9 @@ extern class GLFW {
     @:native('glfwJoystickPresent')
     static function glfwJoystickPresent(index:Int):Int;
 
-    static inline function glfwGetJoystickAxes(index:Int):Array<Float> {
+    static inline function glfwGetJoystickAxes(index:Int):Array<cpp.Float32> {
         force_include();
-        var out:Array<Float> = [];
+        var out:Array<cpp.Float32> = [];
         untyped __cpp__('linc::glfw::getJoystickAxes({0}, {1})', index, out);
         return out;
     }
