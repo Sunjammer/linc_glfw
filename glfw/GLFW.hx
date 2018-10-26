@@ -279,6 +279,12 @@ extern class GLFW {
         untyped __cpp__("linc::glfw::setJoystickCallback({0})", cpp.Pointer.addressOf(GLFWJoystickHandler.callable));
     }
 
+    @:native('glfwGetInputMode')
+    static function glfwGetInputMode(window:Pointer<GLFWwindow>, mode:Int):Int;
+
+    @:native('glfwSetInputMode')
+    static function glfwSetInputMode(window:Pointer<GLFWwindow>, mode:Int, value:Int):Void;
+
     @:native('glfwPollEvents')
     static function glfwPollEvents():Void;
 
