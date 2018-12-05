@@ -12,6 +12,11 @@ typedef HWND = cpp.Pointer<cpp.Void>;
 extern class GLFWwindow {}
 
 @:keep
+@:native("GLFWcursor")
+@:include('linc_glfw.h')
+extern class GLFWcursor {}
+
+@:keep
 @:native("GLFWmonitor")
 @:include('linc_glfw.h')
 extern class GLFWmonitor {}
@@ -302,6 +307,12 @@ extern class GLFW {
 
     @:native("glfwGetTime")
     static function glfwGetTime():Float;
+
+    @:native("glfwCreateStandardCursor")
+    static function glfwCreateStandardCursor(shape:Int):Pointer<GLFWcursor>;
+
+    @:native("glfwSetCursor")
+    static function glfwSetCursor(window:Pointer<GLFWwindow>, cursor:Pointer<GLFWcursor>):Void;
 
 
     //Values
