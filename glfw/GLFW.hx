@@ -844,6 +844,6 @@ extern class GLFW {
     static inline var GLFW_DONT_CARE              = -1;
 
 	@:native("void") 
-	public static function force_include():Void{ };
+	public static function force_include():Void;
 
 } //GLFW
