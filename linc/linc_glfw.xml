@@ -8,6 +8,11 @@
         <file name='${LINC_GLFW_PATH}linc/linc_glfw.cpp' />
     </files>
 
+    <files id='__main__'>
+        <compilerflag value='-I${LINC_GLFW_PATH}linc/'/>
+        <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
+    </files>
+
     <target id="haxe">
         <section if="mac">
             <lib name='${LINC_GLFW_PATH}lib/libglfw.3.2.dylib' />
