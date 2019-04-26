@@ -1,4 +1,5 @@
 package glfw;
+import cpp.Native;
 import cpp.Pointer;
 import cpp.Reference;
 import cpp.Callable;
@@ -159,6 +160,16 @@ class GLFWJoystickHandler {
     }
 }
 
+@:native("cpp.Struct<GLFWvidmode>")
+extern class GLFWvidmode {
+    public var width: Int;
+    public var height: Int;
+    public var redBits: Int;
+    public var greenBits: Int;
+    public var blueBits: Int;
+    public var refreshRate: Int;
+}
+
 @:keep
 @:include('linc_glfw.h')
 #if !display
@@ -211,6 +222,16 @@ extern class GLFW {
     static inline function glfwGetMonitors():Array<Dynamic> {
         return untyped __cpp__("linc::glfw::glfwGetMonitorsHelper()");
     }
+
+    // @:native('glfwGetVideoModes')
+    static inline function glfwGetVideoModes(monitor: Pointer<GLFWmonitor>):Null<Array<GLFWvidmode>> {
+        var count: cpp.Int32 = 0;
+        var modesPtr: cpp.Pointer<GLFWvidmode> = untyped __global__.glfwGetVideoModes(monitor, Native.addressOf(count));
+        return [for (i in 0...count) modesPtr.at(i)];
+    }
+
+    @:native('glfwGetVideoMode')
+    static function glfwGetVideoMode(monitor: Pointer<GLFWmonitor>):Pointer<GLFWvidmode>;
 
     @:native('linc::glfw::glfwGetMonitorNameHelper')
     static function glfwGetMonitorName(monitor:Pointer<GLFWmonitor>):String;
