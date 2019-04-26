@@ -223,7 +223,6 @@ extern class GLFW {
         return untyped __cpp__("linc::glfw::glfwGetMonitorsHelper()");
     }
 
-    // @:native('glfwGetVideoModes')
     static inline function glfwGetVideoModes(monitor: Pointer<GLFWmonitor>):Null<Array<GLFWvidmode>> {
         var count: cpp.Int32 = 0;
         var modesPtr: cpp.Pointer<GLFWvidmode> = untyped __global__.glfwGetVideoModes(monitor, Native.addressOf(count));
