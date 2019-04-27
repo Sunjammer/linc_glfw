@@ -3,26 +3,31 @@
     <files id='haxe'>
         <compilerflag value='-DLINC_GLFW'/>
         <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Haxe realm, don't be too helpful -->
-        <compilerflag value='-I${LINC_GLFW_PATH}linc/'/>
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
-        <file name='${LINC_GLFW_PATH}linc/linc_glfw.cpp' />
     </files>
 
     <files id='__main__'>
-        <compilerflag value='-I${LINC_GLFW_PATH}linc/'/>
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
     </files>
 
     <target id="haxe">
         <section if="mac">
-            <lib name='${LINC_GLFW_PATH}lib/libglfw.3.2.dylib' />
+            <!-- for static link -->
+            <lib name='${LINC_GLFW_PATH}lib/libglfw3.a' />
+            <vflag name="-framework" value="CoreVideo" />
+            <vflag name="-framework" value="IOKit" />
+
+            <!-- for dynamic link -->
+            <!-- <lib name='${LINC_GLFW_PATH}lib/libglfw.3.3.dylib'/> -->
         </section>
         <section if="windows">
             <lib name='${LINC_GLFW_PATH}lib/glfw3dll.lib' />
         </section>
     </target>
 
-    <copyFile name="libglfw.3.2.dylib" from="${LINC_GLFW_PATH}lib" if="mac"/>
+    <!-- for dynamic link -->
+    <!-- <copyFile name="libglfw.3.3.dylib" from="${LINC_GLFW_PATH}lib" if="mac"/> -->
+
     <copyFile name="glfw3.dll" from="${LINC_GLFW_PATH}lib" if="windows"/>
 
 </xml>
