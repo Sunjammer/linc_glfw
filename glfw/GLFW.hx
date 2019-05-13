@@ -31,7 +31,6 @@ class GLFWErrorHandler {
     static var cb:GLFWerrorfun;
 
     static public function nativeCallack(error:Int, message:cpp.ConstCharStar){
-        trace(error+": "+message);
         if(cb != null) cb(error, message);
     }
 
