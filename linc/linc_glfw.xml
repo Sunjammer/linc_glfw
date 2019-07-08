@@ -3,6 +3,7 @@
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/x64" if="windows HXCPP_M64" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/Win32" if="windows" unless="HXCPP_M64" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib" if="mac" />
+    <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/linux" if="linux" />
 
     <files id='haxe'>
         <compilerflag value='-DLINC_GLFW'/>
@@ -15,6 +16,16 @@
     </files>
 
     <target id="haxe">
+        <section if="linux">
+            <lib name='${GLFW_LIB_PATH}/libglfw3.a' />
+            <lib name='-lGL'/>
+            <lib name='-lm'/>
+            <lib name='-lXrandr'/>
+            <lib name='-lXi'/>
+            <lib name='-lX11'/>
+            <lib name='-lXxf86vm'/>
+            <lib name='-lpthread'/>
+        </section>
         <section if="mac">
             <!-- macOS defaults to static linking -->
             <!-- static link -->
