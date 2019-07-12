@@ -42,7 +42,7 @@
             </section>
         </section>
         <section if="windows">
-            <flag value="-libpath:${GLFW_LIB_PATH}" if="HXCPP_M64"/>
+            <flag value="-libpath:${GLFW_LIB_PATH}"/>
 
             <!-- static link -->
             <lib name="glfw3.lib" if="LINC_GLFW_STATIC"/>
