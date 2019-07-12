@@ -6,11 +6,12 @@
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/linux" if="linux" />
 
     <files id='haxe'>
+        <compilerflag value='-I${LINC_GLFW_PATH}/linc/'/>
         <compilerflag value='-DLINC_GLFW'/>
-        <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Haxe realm, don't be too helpful -->
+        <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Don't include GL headers -->
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
     </files>
-
+    
     <files id='__main__'>
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
     </files>

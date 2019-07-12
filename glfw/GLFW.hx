@@ -11,17 +11,17 @@ typedef HWND = cpp.Pointer<cpp.Void>;
 
 @:keep
 @:native("GLFWwindow")
-@:include("GLFW/glfw3.h")
+@:include("linc_glfw.h")
 extern class GLFWwindow {}
 
 @:keep
 @:native("GLFWcursor")
-@:include("GLFW/glfw3.h")
+@:include("linc_glfw.h")
 extern class GLFWcursor {}
 
 @:keep
 @:native("GLFWmonitor")
-@:include("GLFW/glfw3.h")
+@:include("linc_glfw.h")
 extern class GLFWmonitor {}
 
 typedef GLFWerrorfun = Int -> String -> Void;
@@ -175,15 +175,10 @@ extern class GLFWvidmode {
     public var refreshRate: Int;
 }
 
+// See https://www.glfw.org/docs/latest/group__native.html
 @:keep
+@:include('linc_glfw.h')
 #if !display
-@:cppFileCode("
-#include <GLFW/glfw3.h>
-#ifdef HX_WINDOWS
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-#endif
-")
 @:build(linc.Linc.touch())
 @:build(linc.Linc.xml('glfw'))
 #end
@@ -191,7 +186,10 @@ extern class GLFW {
     //Bindings
 
     @:native('glfwInit')
-    static function glfwInit() : Int;
+    static inline function glfwInit() : Int{
+        force_include();
+        return untyped __cpp__('glfwInit()');
+    }
 
     @:native('glfwTerminate')
     static function glfwTerminate() : Void;
