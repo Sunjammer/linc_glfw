@@ -3,18 +3,30 @@
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/x64" if="windows HXCPP_M64" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/Win32" if="windows" unless="HXCPP_M64" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib" if="mac" />
+    <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/linux" if="linux" />
 
     <files id='haxe'>
+        <compilerflag value='-I${LINC_GLFW_PATH}/linc/'/>
         <compilerflag value='-DLINC_GLFW'/>
-        <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Haxe realm, don't be too helpful -->
+        <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Don't include GL headers -->
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
     </files>
-
+    
     <files id='__main__'>
         <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
     </files>
 
     <target id="haxe">
+        <section if="linux">
+            <lib name='${GLFW_LIB_PATH}/libglfw3.a' />
+            <lib name='-lGL'/>
+            <lib name='-lm'/>
+            <lib name='-lXrandr'/>
+            <lib name='-lXi'/>
+            <lib name='-lX11'/>
+            <lib name='-lXxf86vm'/>
+            <lib name='-lpthread'/>
+        </section>
         <section if="mac">
             <!-- macOS defaults to static linking -->
             <!-- static link -->
@@ -30,7 +42,7 @@
             </section>
         </section>
         <section if="windows">
-            <flag value="-libpath:${GLFW_LIB_PATH}" if="HXCPP_M64"/>
+            <flag value="-libpath:${GLFW_LIB_PATH}"/>
 
             <!-- static link -->
             <lib name="glfw3.lib" if="LINC_GLFW_STATIC"/>
