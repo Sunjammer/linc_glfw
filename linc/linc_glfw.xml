@@ -2,18 +2,19 @@
 
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/x64" if="windows HXCPP_M64" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/Win32" if="windows" unless="HXCPP_M64" />
-    <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib" if="mac" />
+    <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/macOS" if="macos" />
     <set name="GLFW_LIB_PATH" value="${LINC_GLFW_PATH}lib/linux" if="linux" />
 
     <files id='haxe'>
         <compilerflag value='-I${LINC_GLFW_PATH}/linc/'/>
         <compilerflag value='-DLINC_GLFW'/>
         <compilerflag value='-DGLFW_INCLUDE_NONE'/> <!-- Don't include GL headers -->
-        <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
+        <compilerflag value='-I${LINC_GLFW_PATH}/lib/'/>
     </files>
     
     <files id='__main__'>
-        <compilerflag value='-I${LINC_GLFW_PATH}lib/'/>
+        <compilerflag value='-I${LINC_GLFW_PATH}/linc/'/>
+        <compilerflag value='-I${LINC_GLFW_PATH}/lib/'/>
     </files>
 
     <target id="haxe">
@@ -27,7 +28,7 @@
             <lib name='-lXxf86vm'/>
             <lib name='-lpthread'/>
         </section>
-        <section if="mac">
+        <section if="macos">
             <!-- macOS defaults to static linking -->
             <!-- static link -->
             <section unless="LINC_GLFW_DYNAMIC">
@@ -56,7 +57,7 @@
     </target>
 
     <!-- copy lib for dynamic link -->
-    <copyFile name="libglfw.3.3.dylib" from="${GLFW_LIB_PATH}" if="mac LINC_GLFW_DYNAMIC"/>
+    <copyFile name="libglfw.3.3.dylib" from="${GLFW_LIB_PATH}" if="macos LINC_GLFW_DYNAMIC"/>
     <copyFile name="glfw3.dll" from="${GLFW_LIB_PATH}" if="windows" unless="LINC_GLFW_STATIC"/>
 
 </xml>
